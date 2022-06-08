@@ -116,6 +116,8 @@ This guide assumes you are using
             -thread_queue_size 8
             -i plughw:1,0
             -c:v copy
+            -map 0:v:0
+            -map 1:a:0
             -f rtsp
             -rtsp_transport tcp
             rtsp://localhost:$RTSP_PORT/$RTSP_PATH
@@ -157,6 +159,8 @@ ffmpeg \
   -thread_queue_size 8 \ # try using as low value as possible
   -i plughw:1,0 \ # capture sound from input 0 on HiFiBerry
   -c:v copy \ # copy video codec
+  -map 0:v:0 \ # map video input stream #0 to output #0
+  -map 1:a:0 \ # map audio input stream #1 (sound card) to output #0
   -f rtsp \ # use RTSP for output
   -rtsp_transport tcp \ # use TCP for RTSP
   rtsp://localhost:$RTSP_PORT/$RTSP_PATH # use the default port and path defined as YAML key
