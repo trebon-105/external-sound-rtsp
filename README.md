@@ -52,22 +52,39 @@ This guide assumes you are using
 6. Reboot and verify the sound card is recognized
 
    ```shell
-   pi@raspi-rtsp:~ $ arecord -l
-   **** List of CAPTURE Hardware Devices ****
-   card 1: sndrpihifiberry [snd_rpi_hifiberry_dacplusadc], device 0: HiFiBerry DAC+ADC HiFi multicodec-0 [HiFiBerry DAC+ADC HiFi multicodec-0]
-     Subdevices: 1/1
-     Subdevice #0: subdevice #0
+   pi@raspi-rtsp:~ $ arecord -L
+   null
+       Discard all samples (playback) or generate zero samples (capture)
+   default
+       Default Audio Device
+   sysdefault
+       Default Audio Device
+   hw:CARD=sndrpihifiberry,DEV=0
+       snd_rpi_hifiberry_dacplusadc, HiFiBerry DAC+ADC HiFi multicodec-0
+       Direct hardware device without any conversions
+   plughw:CARD=sndrpihifiberry,DEV=0
+       snd_rpi_hifiberry_dacplusadc, HiFiBerry DAC+ADC HiFi multicodec-0
+       Hardware device with all software conversions
+   default:CARD=sndrpihifiberry
+       snd_rpi_hifiberry_dacplusadc, HiFiBerry DAC+ADC HiFi multicodec-0
+       Default Audio Device
+   sysdefault:CARD=sndrpihifiberry
+       snd_rpi_hifiberry_dacplusadc, HiFiBerry DAC+ADC HiFi multicodec-0
+       Default Audio Device
+   dsnoop:CARD=sndrpihifiberry,DEV=0
+       snd_rpi_hifiberry_dacplusadc, HiFiBerry DAC+ADC HiFi multicodec-0
+       Direct sample snooping device
    ```
 
-7. Create `/etc/asound.conf` file with the following content (the number has to match with the command above) and reboot again
+7. Create `/etc/asound.conf` file with the following content (the card name has to match the one in the command output above) and reboot again
 
     ```shell
     sudo tee /etc/asound.conf >/dev/null << EOF
     pcm.!default {
-      type hw card 1
+      type hw card "CARD=sndrpihifiberry,DEV=0"
     }
     ctl.!default {
-      type hw card 1
+      type hw card "CARD=sndrpihifiberry,DEV=0"
     }
     EOF
     ```
@@ -101,7 +118,7 @@ This guide assumes you are using
             -f alsa
             -itsoffset 0
             -thread_queue_size 8
-            -i plughw:1,0
+            -i hw:CARD=sndrpihifiberry
             -c:v copy
             -map 0:v:0
             -map 1:a:0
@@ -144,7 +161,7 @@ ffmpeg \
   -f alsa \ # audio input from ALSA
   -itsoffset 0 \ # audio delay to sync with video
   -thread_queue_size 8 \ # try using as low value as possible
-  -i plughw:1,0 \ # capture sound from input 0 on HiFiBerry
+  -i hw:CARD=sndrpihifiberry \ # capture sound from input 0 on HiFiBerry
   -c:v copy \ # copy video codec
   -map 0:v:0 \ # map video input stream #0 to output #0
   -map 1:a:0 \ # map audio input stream #1 (sound card) to output #0
