@@ -163,7 +163,7 @@ ffmpeg \
   -itsoffset 0 \ # audio delay to sync with video
   -thread_queue_size 8 \ # try using as low value as possible
   -ar 44100 \ # audio 44 100 Hz sampling rate
-  -i hw:CARD=sndrpihifiberry \ # capture sound from input 0 on HiFiBerry
+  -i hw:CARD=sndrpihifiberry \ # capture sound from HiFiBerry
   -c:v copy \ # copy video codec
   -map 0:v:0 \ # map video input stream #0 to output #0
   -map 1:a:0 \ # map audio input stream #1 (sound card) to output #0
