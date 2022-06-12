@@ -98,9 +98,9 @@ This guide assumes you are using
 9. Download the [latest version](https://github.com/aler9/rtsp-simple-server/releases) of [rtsp-simple-server](https://github.com/aler9/rtsp-simple-server) for ARMv7
     
     ```shell
-    wget https://github.com/aler9/rtsp-simple-server/releases/download/v0.17.17/rtsp-simple-server_v0.17.17_linux_armv7.tar.gz
-    tar -xvzf rtsp-simple-server_v0.17.17_linux_armv7.tar.gz
-    rm rtsp-simple-server_v0.17.17_linux_armv7.tar.gz
+    wget https://github.com/aler9/rtsp-simple-server/releases/download/v0.19.1/rtsp-simple-server_v0.19.1_linux_armv7.tar.gz
+    tar -xvzf rtsp-simple-server_v0.19.1_linux_armv7.tar.gz
+    rm rtsp-simple-server_v0.19.1_linux_armv7.tar.gz
     sudo mv rtsp-simple-server /usr/local/bin/
     sudo mv rtsp-simple-server.yml /usr/local/etc/
     ```
