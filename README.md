@@ -9,41 +9,28 @@ This guide assumes you are using
 
 ## Setup
 
-1. Install fresh [Raspberry Pi OS Lite](https://www.raspberrypi.com/software/operating-systems) via [Raspberry Pi imager](https://www.raspberrypi.com/software) onto a SD card
+1. Install fresh [Raspberry Pi OS Lite](https://www.raspberrypi.com/software/operating-systems) via [Raspberry Pi imager](https://www.raspberrypi.com/software) onto a SD card; don't forget to [set a password](https://www.raspberrypi.com/news/raspberry-pi-bullseye-update-april-2022/) and enable SSH in settings
 
-2. Create `ssh` file in the root of `boot` volume to allow SSH access
-
-   ```shell
-   cd /Volumes/boot # for macOS
-   touch ssh
-   ```
-
-3. SSH to the Raspberry using default username `pi` and password `raspberry`
+2. SSH to the Raspberry using the username and password you set
 
    ```shell
    ssh pi@192.168.105.123
    ```
 
-4. Change password
-
-   ```shell
-   passwd
-   ```
-
-5. Update & upgrade
+3. Update & upgrade
 
    ```shell
    sudo apt-get update && sudo apt-get upgrade -y
    ```
 
-6. Update hostname & set timezone
+4. Update hostname & set timezone
 
    ```shell
    sudo raspi-config nonint do_hostname raspi-rtsp
    sudo timedatectl set-timezone Europe/Prague
    ```
 
-7. [Configure HiFiBerry](https://www.hifiberry.com/docs/software/configuring-linux-3-18-x): comment out line with `dtparam=audio=on` in `/boot/config.txt` and add the following below:
+5. [Configure HiFiBerry](https://www.hifiberry.com/docs/software/configuring-linux-3-18-x): comment out line with `dtparam=audio=on` in `/boot/config.txt` and add the following below:
 
    ```
    # Enable HiFiBerry DAC+ ADC
@@ -62,7 +49,7 @@ This guide assumes you are using
    dtoverlay=vc4-kms-v3d,audio=off
    ```
 
-9. Reboot and verify the sound card is recognized
+6. Reboot and verify the sound card is recognized
 
    ```shell
    pi@raspi-rtsp:~ $ arecord -l
@@ -72,7 +59,7 @@ This guide assumes you are using
      Subdevice #0: subdevice #0
    ```
 
-10. Create `/etc/asound.conf` file with the following content (the number has to match with the command above) and reboot again
+7. Create `/etc/asound.conf` file with the following content (the number has to match with the command above) and reboot again
 
     ```shell
     sudo tee /etc/asound.conf >/dev/null << EOF
@@ -85,13 +72,13 @@ This guide assumes you are using
     EOF
     ```
 
-11. Install ffmpeg
+8. Install ffmpeg
 
     ```shell
     sudo apt install ffmpeg -y
     ```
 
-12. Download the [latest version](https://github.com/aler9/rtsp-simple-server/releases) of [rtsp-simple-server](https://github.com/aler9/rtsp-simple-server) for ARMv7
+9. Download the [latest version](https://github.com/aler9/rtsp-simple-server/releases) of [rtsp-simple-server](https://github.com/aler9/rtsp-simple-server) for ARMv7
     
     ```shell
     wget https://github.com/aler9/rtsp-simple-server/releases/download/v0.17.17/rtsp-simple-server_v0.17.17_linux_armv7.tar.gz
@@ -101,7 +88,7 @@ This guide assumes you are using
     sudo mv rtsp-simple-server.yml /usr/local/etc/
     ```
 
-13. Fill in RTSP stream URL in the following and add it under the `paths` key at the end of the `/usr/local/etc/rtsp-simple-server.yml` file (see [FFmpeg command explained below](#ffmpeg-command))
+10. Fill in RTSP stream URL in the following and add it under the `paths` key at the end of the `/usr/local/etc/rtsp-simple-server.yml` file (see [FFmpeg command explained below](#ffmpeg-command))
 
     ```yaml
       stage:
@@ -124,7 +111,7 @@ This guide assumes you are using
         runOnInitRestart: yes
      ```
 
-12. Create the service to start rtsp-simple-server on boot
+11. Create the service to start rtsp-simple-server on boot
 
     ```shell
     sudo tee /etc/systemd/system/rtsp-simple-server.service >/dev/null << EOF
@@ -137,7 +124,7 @@ This guide assumes you are using
     EOF
     ```
 
-13. Enable and start the service
+12. Enable and start the service
 
     ```shell
     sudo systemctl enable rtsp-simple-server
